@@ -12,18 +12,18 @@ async function main() {
   // If this script is run directly using `node` you may want to call compile
   // manually to make sure everything is compiled
   // await hre.run('compile');
+    // We get the contract to deploy
+    const HerosToken = await hre.ethers.getContractFactory("CryptoHerosToken");
+    const herosToken = await HerosToken.deploy("CryptoHerosToken", "HERO");
+    await herosToken.deployed();
+    console.log("Heros Token deployed to:", herosToken.address);
+
 
   // We get the contract to deploy
   const HerosGame = await hre.ethers.getContractFactory("CryptoHerosGame");
-
-  await HerosGame.deployed();
-  // We get the contract to deploy
-  const HerosToken = await hre.ethers.getContractFactory("CryptoHerosToken");
-
-  await HerosToken.deployed();
-
-  console.log("Heros Game deployed to:", HerosGame.address);
-  console.log("Heros Token deployed to:", HerosToken.address);
+  const herosGame = await HerosGame.deploy(herosToken.address);
+  await herosGame.deployed();
+  console.log("Heros Game deployed to:", herosGame.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
